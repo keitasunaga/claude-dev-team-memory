@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+coverage
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Generated files
+src/db/migrations/global/*.sql
+src/db/migrations/project/*.sql
+
+# Configuration that should not be formatted
+package-lock.json
+yarn.lock
+.gitignore

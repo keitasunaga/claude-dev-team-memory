@@ -8,15 +8,14 @@ pnpm-debug.log*
 # Build output
 dist/
 build/
-*.js
-*.js.map
-*.d.ts
+*.tsbuildinfo
 
 # Data files
 data/
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
-*.json
 
 # Environment
 .env
@@ -32,6 +31,11 @@ data/
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 # Logs
@@ -41,3 +45,30 @@ logs/
 # Test coverage
 coverage/
 .nyc_output/
+
+# MCP server specific
+.mcp-memory-server/
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Husky
+.husky/_
+
+# Allow specific config files
+!*.config.js
+!*.config.ts
+!tsconfig.json
+!package.json
