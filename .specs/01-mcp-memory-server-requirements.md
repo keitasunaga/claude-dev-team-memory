@@ -287,3 +287,57 @@ interface DevTeamMemory {
 ### 7.3 セキュリティリスク
 - **リスク**: 機密情報の漏洩
 - **対策**: ローカルストレージ限定、暗号化オプション
+
+## 8. 参考実装
+
+実装時は以下の既存のMCPメモリサーバー実装を参考にすること：
+
+### 8.1 公式実装
+- **@modelcontextprotocol/server-memory**
+  - https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+  - ナレッジグラフベースの基本実装
+  - エンティティ、リレーション、観察の3層構造
+
+### 8.2 コミュニティ実装
+
+#### 高機能実装
+- **mcp-memory-service**
+  - https://github.com/doobidoo/mcp-memory-service
+  - ChromaDB/SQLite-vec対応
+  - セマンティック検索機能
+
+#### プロジェクト管理向け
+- **memory-bank-mcp**
+  - https://github.com/alioshr/memory-bank-mcp
+  - Markdownファイルベース
+  - 5ファイル構造での管理
+
+#### AI統合
+- **mcp-mem0**
+  - https://github.com/coleam00/mcp-mem0
+  - Mem0.ai統合
+  - PostgreSQL + pgvector
+
+#### その他の参考実装
+- **claude-memory-mcp**
+  - https://github.com/WhenMoon-afk/claude-memory-mcp
+  - 最適なLLMメモリ技術の研究に基づく実装
+
+- **mcp-chromadb-memory**
+  - https://github.com/stevenjjobson/mcp-chromadb-memory
+  - ChromaDBを使用したスマートメモリ管理
+
+### 8.3 実装時の注意点
+
+1. **既存実装の分析**
+   - 各実装のアーキテクチャを理解
+   - 長所と短所を把握
+   - 本プロジェクトに適した部分を選択的に採用
+
+2. **ライセンス確認**
+   - 各プロジェクトのライセンスを確認
+   - コードの流用時は適切なクレジット表記
+
+3. **ベストプラクティスの採用**
+   - 複数の実装から共通するパターンを抽出
+   - 本プロジェクトの要件に合わせてカスタマイズ
