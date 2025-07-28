@@ -97,26 +97,138 @@
 - JSON/YAMLエクスポート形式
 
 ### 4.2 データ構造
+
+#### 4.2.1 TypeScript インターフェース
 ```typescript
 interface GlobalMemory {
-  preferences: Map<string, any>;
-  patterns: string[];
-  shortcuts: Map<string, string>;
+  user_preferences: {
+    language: string;              // "日本語で回答"
+    commit_style: string;          // "日本語でコミットメッセージ"
+    package_manager: string;       // "pnpm優先"
+    container: string;             // "Docker Compose使用"
+    test_coverage: string;         // "80%以上"
+  };
+  development_style: {
+    branch_strategy: string;       // "Git Flow (develop → feature)"
+    pr_target: string;             // "必ずdevelopブランチへ"
+    testing: string;               // "Jest + Playwright"
+    linting: string;               // "ESLint + Prettier"
+  };
+  communication_style: {
+    response: string;              // "簡潔に、要点を明確に"
+    explanation: string;           // "なぜそうするか理由も説明"
+    error_handling: string;        // "エラーは原因と解決策をセットで"
+  };
 }
 
 interface ProjectMemory {
   path: string;
-  issue: IssueContext;
-  tasks: TaskList;
-  checkpoints: Checkpoint[];
-  lastModified: Date;
+  current_issue: {
+    number: number;
+    title: string;
+    requirements: string[];
+    design_decisions: string[];
+  };
+  tasks: {
+    completed: string[];
+    in_progress: string;
+    pending: string[];
+  };
+  checkpoint: {
+    timestamp: string;
+    branch: string;
+    last_command: string;
+    next_action: string;
+  };
 }
 
-interface Checkpoint {
-  id: string;
-  name: string;
-  timestamp: Date;
-  state: ProjectState;
+interface DevTeamMemory {
+  // Issue関連の永続情報
+  issue: {
+    context: IssueContext;
+    requirements: string[];
+    design: DesignDecision[];
+    tasks: TaskList;
+  };
+  
+  // 作業状態のスナップショット
+  session: {
+    currentTask: string;
+    branch: string;
+    modifiedFiles: string[];
+    lastCheckpoint: Date;
+  };
+  
+  // 自動保存トリガー
+  autoSave: {
+    onTaskComplete: boolean;
+    onTestPass: boolean;
+    interval: number;  // 分単位
+  };
+}
+```
+
+#### 4.2.2 JSON構造例
+
+**グローバルメモリ例**
+```json
+{
+  "user_preferences": {
+    "language": "日本語で回答",
+    "commit_style": "日本語でコミットメッセージ",
+    "package_manager": "pnpm優先",
+    "container": "Docker Compose使用",
+    "test_coverage": "80%以上"
+  },
+  "development_style": {
+    "branch_strategy": "Git Flow (develop → feature)",
+    "pr_target": "必ずdevelopブランチへ",
+    "testing": "Jest + Playwright",
+    "linting": "ESLint + Prettier"
+  },
+  "communication_style": {
+    "response": "簡潔に、要点を明確に",
+    "explanation": "なぜそうするか理由も説明",
+    "error_handling": "エラーは原因と解決策をセットで"
+  }
+}
+```
+
+**プロジェクトメモリ例**
+```json
+{
+  "current_issue": {
+    "number": 42,
+    "title": "ユーザー認証機能の実装",
+    "requirements": [
+      "JWT + Refresh Token",
+      "Redisセッション管理",
+      "2FA対応"
+    ],
+    "design_decisions": [
+      "認証ミドルウェアはNestJS Guards使用",
+      "トークン有効期限: Access 15分, Refresh 7日"
+    ]
+  },
+  "tasks": {
+    "completed": [
+      "✓ 認証エンドポイント実装",
+      "✓ JWT生成・検証ロジック",
+      "✓ ユニットテスト作成"
+    ],
+    "in_progress": "Redisセッション実装",
+    "pending": [
+      "E2Eテスト作成",
+      "ドキュメント更新",
+      "PR作成"
+    ]
+  },
+  "checkpoint": {
+    "timestamp": "2025-01-28T16:00:00Z",
+    "branch": "feature/issue-42-auth",
+    "last_command": "pnpm test:unit",
+    "next_action": "Redisクライアント設定"
+  }
 }
 ```
 
