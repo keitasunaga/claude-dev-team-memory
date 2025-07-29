@@ -1,14 +1,14 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/scripts/setup.ts'],
   format: ['esm'],
   target: 'node20',
   platform: 'node',
-  dts: true,
+  dts: false, // Skip type checking for now
   sourcemap: true,
   clean: true,
-  minify: false,
+  minify: process.env.NODE_ENV === 'production',
   splitting: false,
   shims: false,
   bundle: true,

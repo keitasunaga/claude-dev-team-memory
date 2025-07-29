@@ -16,20 +16,7 @@ async function main() {
     const server = new MCPMemoryServer(config);
     await server.start();
 
-    logger.info('MCP Memory Server started successfully');
-
-    // Graceful shutdown handling
-    process.on('SIGINT', async () => {
-      logger.info('Received SIGINT, shutting down gracefully...');
-      await server.stop();
-      process.exit(0);
-    });
-
-    process.on('SIGTERM', async () => {
-      logger.info('Received SIGTERM, shutting down gracefully...');
-      await server.stop();
-      process.exit(0);
-    });
+    logger.info('MCP Memory Server is running. Press Ctrl+C to stop.');
   } catch (error) {
     logger.error('Failed to start MCP Memory Server', error);
     process.exit(1);
@@ -42,4 +29,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export { MCPMemoryServer } from './server/MCPMemoryServer.js';
-export * from './types/index.js';
+export { MemoryManager } from './services/MemoryManager.js';
+export { CheckpointManager } from './services/CheckpointManager.js';
+export { AutoSaveService } from './services/AutoSaveService.js';
+export type * from './types/index.js';

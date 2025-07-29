@@ -2,9 +2,9 @@
 
 ## Executive Summary / エグゼクティブサマリー
 
-This document provides a detailed task breakdown for implementing the MCP Memory Server, following SMART criteria (Specific, Measurable, Achievable, Relevant, Time-bound). The project is estimated at **320-400 hours** of development time, organized into 4 sprints over 8-10 weeks.
+This document provides a detailed task breakdown for implementing the MCP Memory Server, following SMART criteria (Specific, Measurable, Achievable, Relevant, Time-bound). The project has been optimized for MVP delivery in **213 hours** (Weeks 1-7), with additional **106 hours** for future enhancements (Weeks 8-10).
 
-本ドキュメントは、SMART基準（具体的、測定可能、達成可能、関連性、期限付き）に従って、MCPメモリサーバーの実装のための詳細なタスク分解を提供します。プロジェクトは**320-400時間**の開発時間と見積もられ、8-10週間にわたる4つのスプリントで編成されています。
+本ドキュメントは、SMART基準（具体的、測定可能、達成可能、関連性、期限付き）に従って、MCPメモリサーバーの実装のための詳細なタスク分解を提供します。プロジェクトはMVP納品のために**213時間**（第1-7週）に最適化され、将来の機能拡張のために追加で**106時間**（第8-10週）が計画されています。
 
 ## Project Timeline / プロジェクトタイムライン
 
@@ -12,8 +12,8 @@ This document provides a detailed task breakdown for implementing the MCP Memory
 Week 1-2: Sprint 1 - Foundation & Core Infrastructure
 Week 3-4: Sprint 2 - Memory Management & Data Layer
 Week 5-6: Sprint 3 - API Implementation & Integration
-Week 7-8: Sprint 4 - Security, Performance & Deployment
-Week 9-10: Buffer for testing, documentation, and deployment
+Week 7: Sprint 4 - MVP Deployment (9 hours total)
+Week 8-10: Future enhancements and production optimization
 ```
 
 ### ASCII Gantt Chart / ASCIIガントチャート
@@ -35,11 +35,11 @@ Sprint 3: API & Integration   |    |    |    |    |████|████|   
   MCP Server Core             |    |    |    |    |████|    |    |    |    |    
   API Handlers                |    |    |    |    |██  |██  |    |    |    |    
   Auto-Save Service           |    |    |    |    |    |████|    |    |    |    
-Sprint 4: Security & Deploy   |    |    |    |    |    |    |████|████|    |    
-  Security Implementation     |    |    |    |    |    |    |████|    |    |    
-  Performance Optimization    |    |    |    |    |    |    |██  |██  |    |    
-  Deployment & Packaging      |    |    |    |    |    |    |    |████|    |    
-Testing & Documentation       |    |    |    |    |    |    |    |    |████|████
+Sprint 4: MVP Deployment      |    |    |    |    |    |    |██  |    |    |    
+  Essential Security          |    |    |    |    |    |    |█   |    |    |    
+  Health Check                |    |    |    |    |    |    |█   |    |    |    
+  Deployment & Packaging      |    |    |    |    |    |    |██  |    |    |    
+Future Enhancements           |    |    |    |    |    |    |    |████|████|████
 ```
 
 ## Sprint 1: Foundation & Core Infrastructure / 基盤とコアインフラストラクチャ
@@ -338,90 +338,116 @@ const handlers = {
 - Retries on transient failures
 - Examples demonstrate all features
 
-## Sprint 4: Security, Performance & Deployment / セキュリティ、パフォーマンス、デプロイメント
+## Sprint 4: MVP Deployment & Essential Security / MVPデプロイメントと基本セキュリティ
 
-### 4.1 Security Implementation (16 hours / 16時間)
+### 4.1 Essential Security (2 hours / 2時間) - MVP Priority
 
 **Tasks / タスク:**
-- [ ] Implement encryption service
-- [ ] Add access control layer
-- [ ] Implement input sanitization
-- [ ] Add security headers
-- [ ] Create security audit tools
+- [ ] Implement project path validation
+- [ ] Add basic input sanitization
+- [ ] Verify Drizzle ORM parameterized queries
 
 **Acceptance Criteria / 受け入れ基準:**
-- Optional encryption works correctly
 - Path traversal prevented
-- SQL injection impossible
-- Security audit passes
+- SQL injection impossible through Drizzle ORM
+- Invalid project paths rejected
 
 **Test Requirements / テスト要件:**
-- Encryption/decryption tests
-- Security vulnerability tests
-- Access control tests
-
-**Risks / リスク:**
-- Performance impact of encryption
-- Mitigation: Make encryption optional
-
-### 4.2 Performance Optimization (12 hours / 12時間)
-
-**Tasks / タスク:**
-- [ ] Implement database indexing
-- [ ] Optimize query performance
-- [ ] Add performance monitoring
-- [ ] Implement batch operations
-- [ ] Create performance benchmarks
-
-**Acceptance Criteria / 受け入れ基準:**
-- Queries execute in < 50ms
-- Batch operations 10x faster
-- Memory usage < 100MB idle
-- CPU usage minimal when idle
-
-**Test Requirements / テスト要件:**
-- Load testing with 1000+ projects
-- Memory leak detection tests
-- CPU profiling tests
-
-### 4.3 Monitoring and Logging (8 hours / 8時間)
-
-**Tasks / タスク:**
-- [ ] Configure Pino logger
-- [ ] Add structured logging
-- [ ] Implement health checks
-- [ ] Create metrics collection
-- [ ] Add log rotation
-
-**Acceptance Criteria / 受け入れ基準:**
-- All operations logged
-- Logs are structured JSON
-- Health endpoint responds
-- Metrics exported correctly
-
-### 4.4 Deployment and Packaging (16 hours / 16時間)
-
-**Tasks / タスク:**
-- [ ] Create installation scripts
-- [ ] Build distribution packages
-- [ ] Create Claude Desktop config
-- [ ] Write deployment documentation
-- [ ] Create upgrade procedures
-
-**Acceptance Criteria / 受け入れ基準:**
-- One-command installation
-- Works with Claude Desktop
-- Upgrade preserves data
-- Documentation complete
+- Path validation tests
+- SQL injection prevention tests (already handled by Drizzle)
 
 **Technical Notes / 技術的メモ:**
-```bash
-#!/bin/bash
-# install.sh
-MCP_DIR="$HOME/.claude/mcp-memory"
-mkdir -p "$MCP_DIR"/{global,projects,backups,logs}
-chmod 700 "$MCP_DIR"
+```typescript
+// Simple path validation
+function validateProjectPath(path: string): boolean {
+  // Prevent path traversal
+  if (path.includes('..') || !path.startsWith('/')) {
+    return false;
+  }
+  return true;
+}
 ```
+
+### 4.2 Health Check Implementation (1 hour / 1時間) - MVP Priority
+
+**Tasks / タスク:**
+- [ ] Create health check endpoint
+- [ ] Add database connection check
+- [ ] Return server status
+
+**Acceptance Criteria / 受け入れ基準:**
+- Health endpoint responds with 200 OK
+- Database connection status included
+- Response time < 100ms
+
+**Technical Notes / 技術的メモ:**
+```typescript
+// Simple health check
+async function healthCheck() {
+  return {
+    status: 'healthy',
+    database: await dbManager.isConnected(),
+    timestamp: new Date().toISOString()
+  };
+}
+```
+
+### 4.3 Deployment and Packaging (6 hours / 6時間) - MVP Priority
+
+**Tasks / タスク:**
+- [ ] Create installation script
+- [ ] Build distribution package
+- [ ] Create Claude Desktop config file
+- [ ] Write quick start documentation
+- [ ] Test installation process
+
+**Acceptance Criteria / 受け入れ基準:**
+- One-command installation works
+- Claude Desktop recognizes the server
+- Installation takes < 2 minutes
+- Basic documentation available
+
+**Technical Notes / 技術的メモ:**
+```json
+// claude_desktop_config.json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["~/.claude/mcp-memory/dist/index.js"],
+      "env": {
+        "MCP_MEMORY_HOME": "~/.claude/mcp-memory"
+      }
+    }
+  }
+}
+```
+
+### 4.4 Future Enhancements (Postponed / 延期)
+
+**Advanced Security (Post-MVP):**
+- [ ] Encryption service implementation
+- [ ] Access control layer
+- [ ] Security audit tools
+- [ ] Advanced threat protection
+
+**Performance Optimization (Post-MVP):**
+- [ ] Advanced database indexing
+- [ ] Query performance optimization
+- [ ] Performance monitoring dashboard
+- [ ] Batch operations
+- [ ] Comprehensive benchmarks
+
+**Advanced Monitoring (Post-MVP):**
+- [ ] Detailed structured logging
+- [ ] Metrics collection and export
+- [ ] Log rotation and archival
+- [ ] Performance analytics
+
+**Note / 注記:**
+The MVP focuses on essential features for local Claude Desktop usage. Enterprise-level security, performance optimization, and monitoring features are deferred to future releases.
+
+MVPはローカルのClaude Desktop使用に必要な機能に焦点を当てています。エンタープライズレベルのセキュリティ、パフォーマンス最適化、監視機能は将来のリリースに延期されます。
 
 ## Testing Strategy / テスト戦略
 
@@ -515,11 +541,11 @@ chmod 700 "$MCP_DIR"
 - **Team**: 2 developers  
 - **Hours**: 48 hours
 
-### Sprint 4 (Week 7-8): Production Ready
-- **Goal**: Security, performance, deployment
-- **Deliverables**: Secure, optimized, packaged server
-- **Team**: 2-3 developers
-- **Hours**: 52 hours
+### Sprint 4 (Week 7): MVP Deployment
+- **Goal**: Deploy MVP with essential security
+- **Deliverables**: Working Claude Desktop integration
+- **Team**: 1 developer
+- **Hours**: 9 hours
 
 ### Buffer Period (Week 9-10)
 - **Goal**: Testing, documentation, deployment
@@ -529,17 +555,29 @@ chmod 700 "$MCP_DIR"
 
 ## Total Effort Estimation / 総工数見積もり
 
-- **Development**: 230 hours
-- **Testing**: 60 hours
-- **Documentation**: 30 hours
-- **Deployment**: 20 hours
-- **Project Management**: 40 hours
-- **Buffer (10%)**: 38 hours
+### MVP Phase (Weeks 1-7)
+- **Development**: 147 hours (Sprint 1-3 + MVP Sprint 4)
+- **Testing**: 30 hours
+- **Documentation**: 10 hours (Quick start only)
+- **Deployment**: 6 hours
+- **Project Management**: 20 hours
 
-**Total Project Hours**: 418 hours (52 person-days)
+**MVP Total**: 213 hours (27 person-days)
+
+### Future Enhancement Phase (Weeks 8-10)
+- **Advanced Security**: 16 hours
+- **Performance Optimization**: 12 hours
+- **Advanced Monitoring**: 8 hours
+- **Testing**: 30 hours
+- **Documentation**: 20 hours
+- **Project Management**: 20 hours
+
+**Enhancement Total**: 106 hours (13 person-days)
+
+**Total Project Hours**: 319 hours (40 person-days)
 
 ## Conclusion / 結論
 
-This comprehensive task breakdown provides a clear roadmap for implementing the MCP Memory Server. The project is well-scoped for a 2-3 person team over 8-10 weeks, with clear deliverables and success metrics. Regular sprint reviews and adjustments will ensure successful delivery.
+This comprehensive task breakdown provides a clear roadmap for implementing the MCP Memory Server with a focus on rapid MVP delivery. The MVP can be completed by 1-2 developers in 7 weeks (213 hours), with enterprise features deferred to future releases. This approach enables quick integration with Claude Desktop while maintaining a path for future enhancements.
 
-この包括的なタスク分解は、MCPメモリサーバーの実装のための明確なロードマップを提供します。プロジェクトは2-3人のチームで8-10週間にわたって適切にスコープされており、明確な成果物と成功指標があります。定期的なスプリントレビューと調整により、成功した納品を保証します。
+この包括的なタスク分解は、迅速なMVP納品に焦点を当てたMCPメモリサーバーの実装のための明確なロードマップを提供します。MVPは1-2人の開発者により7週間（213時間）で完成でき、エンタープライズ機能は将来のリリースに延期されます。このアプローチにより、将来の機能拡張への道筋を維持しながら、Claude Desktopとの迅速な統合が可能になります。

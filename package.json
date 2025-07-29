@@ -37,9 +37,12 @@
     "url": "https://github.com/keitasunaga/claude-dev-team-memory"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "@types/js-yaml": "^4.0.9",
     "better-sqlite3": "^9.0.0",
     "drizzle-orm": "^0.29.0",
+    "js-yaml": "^4.1.0",
+    "lru-cache": "^11.1.0",
     "pino": "^8.16.0",
     "pino-pretty": "^10.2.0",
     "zod": "^3.22.4"

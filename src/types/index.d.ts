@@ -252,3 +252,96 @@ export interface APIResponse<T = any> {
     details?: any;
   };
 }
+
+// Memory Manager Interfaces
+export interface IMemoryManager {
+  // Global preference methods
+  saveGlobalPreference(category: string, key: string, value: string): Promise<void>;
+  getGlobalPreference(category: string, key?: string): Promise<Record<string, any> | string | null>;
+  getAllGlobalPreferences(): Promise<GlobalMemory>;
+  deleteGlobalPreference(category: string, key?: string): Promise<void>;
+  
+  // Project context methods
+  saveProjectContext(projectPath: string, context: Partial<ProjectMemory>): Promise<void>;
+  getProjectContext(projectPath: string): Promise<ProjectMemory | null>;
+  listProjects(): Promise<ProjectInfo[]>;
+  deleteProject(projectPath: string): Promise<void>;
+  
+  // Issue context methods
+  saveIssueContext(projectPath: string, issue: IssueContext): Promise<void>;
+  getIssueContext(projectPath: string): Promise<IssueContext | null>;
+  
+  // Task management methods
+  saveTasks(projectPath: string, tasks: TaskList): Promise<void>;
+  getTasks(projectPath: string): Promise<TaskList | null>;
+  updateTaskStatus(projectPath: string, taskId: string, status: Task['status']): Promise<void>;
+  
+  // Session state methods
+  saveSessionState(projectPath: string, session: SessionState): Promise<void>;
+  getSessionState(projectPath: string): Promise<SessionState | null>;
+  
+  // Export methods
+  exportMemory(format: ExportFormat): Promise<string>;
+  exportProjectMemory(projectPath: string, format: ExportFormat): Promise<string>;
+}
+
+// Checkpoint Manager Interfaces
+export interface ICheckpointManager {
+  createCheckpoint(projectPath: string, name?: string): Promise<Checkpoint>;
+  listCheckpoints(projectPath: string): Promise<Checkpoint[]>;
+  restoreCheckpoint(projectPath: string, checkpointId: string): Promise<void>;
+  deleteCheckpoint(projectPath: string, checkpointId: string): Promise<void>;
+  compareCheckpoints(projectPath: string, checkpointId1: string, checkpointId2: string): Promise<any>;
+}
+
+// Repository Interfaces
+export interface IRepository<T, K> {
+  findAll(): Promise<T[]>;
+  findById(id: K): Promise<T | null>;
+  create(data: Partial<T>): Promise<T>;
+  update(id: K, data: Partial<T>): Promise<T | null>;
+  delete(id: K): Promise<boolean>;
+}
+
+export interface IGlobalRepository {
+  savePreference(category: string, key: string, value: string, type?: string): Promise<void>;
+  getPreference(category: string, key?: string): Promise<any>;
+  getAllPreferences(): Promise<GlobalMemory>;
+  deletePreference(category: string, key?: string): Promise<void>;
+}
+
+export interface IProjectRepository {
+  createProject(projectPath: string, projectName: string): Promise<ProjectInfo>;
+  getProject(projectPath: string): Promise<ProjectInfo | null>;
+  updateProject(projectPath: string, data: Partial<ProjectInfo>): Promise<void>;
+  deleteProject(projectPath: string): Promise<void>;
+  listProjects(): Promise<ProjectInfo[]>;
+  
+  // Issue methods
+  saveIssue(projectId: number, issue: Partial<CurrentIssue>): Promise<void>;
+  getIssue(projectId: number): Promise<CurrentIssue | null>;
+  
+  // Task methods
+  saveTasks(projectId: number, tasks: Task[]): Promise<void>;
+  getTasks(projectId: number): Promise<Task[]>;
+  updateTask(taskId: number, data: Partial<Task>): Promise<void>;
+  
+  // Session methods
+  saveSession(projectId: number, session: Partial<SessionState>): Promise<void>;
+  getSession(projectId: number): Promise<SessionState | null>;
+}
+
+// Auto-save service interface
+export interface IAutoSaveService {
+  start(): void;
+  stop(): void;
+  triggerSave(trigger: string): Promise<void>;
+  setInterval(interval: number): void;
+}
+
+// Memory Configuration
+export interface MemoryConfig {
+  cacheSize?: number;
+  cacheTTL?: number;
+  enableCache?: boolean;
+}

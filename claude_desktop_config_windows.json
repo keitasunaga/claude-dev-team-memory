@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["%USERPROFILE%\\.claude\\mcp-memory\\dist\\index.js"],
+      "env": {
+        "NODE_ENV": "production",
+        "MCP_MEMORY_CONFIG": "%USERPROFILE%\\.claude\\mcp-memory\\config.json"
+      }
+    }
+  }
+}
