@@ -1,12 +1,12 @@
 # MCP Memory Server Quick Start Guide
 
-Welcome to MCP Memory Server! This guide will help you get started with persistent memory management for Claude Desktop.
+Welcome to MCP Memory Server! This guide will help you get started with persistent memory management for Claude Code and Claude Desktop.
 
 ## Prerequisites
 
 - Node.js 20 or higher
 - npm or pnpm
-- Claude Desktop installed
+- Claude Desktop or Claude Code CLI
 
 ## Installation
 
@@ -46,13 +46,35 @@ mkdir "$env:USERPROFILE\.claude\mcp-memory\logs"
 Copy-Item -Recurse dist "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item package.json "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item -Recurse node_modules "$env:USERPROFILE\.claude\mcp-memory\"
-
-# Configure Claude Desktop (see manual configuration below)
 ```
 
-### Manual Configuration
+## Configuration
 
-If the automatic installation doesn't work, you can manually configure Claude Desktop:
+### Option 1: Claude Code CLI (Recommended)
+
+The easiest way to use the MCP Memory Server is through Claude Code CLI:
+
+```bash
+# Add the MCP server
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# For Windows, use full path:
+claude mcp add memory node %USERPROFILE%\.claude\mcp-memory\dist\index.js
+
+# Verify it's added
+claude mcp list
+
+# Check server details
+claude mcp get memory
+```
+
+Once added, you can use the memory tools in Claude Code by:
+1. Typing `/mcp` to see available servers and tools
+2. Using the memory commands naturally in your conversation
+
+### Option 2: Claude Desktop Configuration
+
+If you prefer using Claude Desktop, manually configure it:
 
 1. Find your Claude Desktop configuration file:
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`

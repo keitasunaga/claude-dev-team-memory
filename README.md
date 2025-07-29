@@ -40,7 +40,7 @@ The installation script will:
 1. Install dependencies
 2. Build the project
 3. Set up directory structure
-4. Configure Claude Desktop automatically
+4. Configure Claude Desktop automatically (if installed)
 5. Create initial configuration
 
 ### Manual Installation
@@ -61,7 +61,26 @@ cp package.json ~/.claude/mcp-memory/
 cp -r node_modules ~/.claude/mcp-memory/
 ```
 
-### Claude Desktop Configuration
+### Configuration Methods
+
+#### Option 1: Claude Code CLI (Recommended)
+
+```bash
+# Add the MCP server to Claude Code
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# Verify installation
+claude mcp list
+
+# View server details
+claude mcp get memory
+```
+
+To use in Claude Code:
+- Type `/mcp` to see available servers and tools
+- The memory server tools will be automatically available
+
+#### Option 2: Claude Desktop Configuration
 
 Add to your Claude Desktop config file:
 
@@ -104,6 +123,20 @@ The server exposes these tools to Claude:
 
 ### Example Usage in Claude
 
+#### Using Claude Code CLI
+```bash
+# First, check available tools
+/mcp
+
+# Then use the memory tools
+"Remember that I prefer pnpm over npm"
+"Save the current issue context"
+"Create a checkpoint before refactoring"
+"What was I working on in this project?"
+"Restore from the last checkpoint"
+```
+
+#### Direct Usage
 ```
 "Remember that I prefer pnpm over npm"
 "Save the current issue context"

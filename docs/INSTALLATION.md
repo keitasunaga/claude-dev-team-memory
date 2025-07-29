@@ -8,7 +8,7 @@ Before installing, ensure you have:
 
 - Node.js 20 or higher
 - npm or pnpm package manager  
-- Claude Desktop installed
+- Claude Desktop or Claude Code CLI
 - Git (for cloning the repository)
 
 ### Checking Prerequisites
@@ -26,6 +26,9 @@ ls "/Applications/Claude.app" 2>/dev/null && echo "Claude Desktop found" || echo
 
 # Windows
 if exist "%LOCALAPPDATA%\Programs\Claude\Claude.exe" (echo Claude Desktop found) else (echo Claude Desktop not found)
+
+# Check if Claude Code CLI is installed
+claude --version
 ```
 
 ## Automated Installation
@@ -52,8 +55,9 @@ The script will:
 3. Build the project
 4. Create the directory structure
 5. Copy files to the installation directory
-6. Configure Claude Desktop automatically
+6. Configure Claude Desktop automatically (if installed)
 7. Create default configuration files
+8. Provide instructions for Claude Code CLI setup
 
 ### What the Script Does
 
@@ -112,7 +116,29 @@ Copy-Item package.json "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item -Recurse node_modules "$env:USERPROFILE\.claude\mcp-memory\"
 ```
 
-### Step 3: Configure Claude Desktop
+### Step 3: Configure Your Claude Environment
+
+#### Option A: Using Claude Code CLI (Recommended)
+
+```bash
+# Add the MCP server to Claude Code
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# For Windows, use:
+claude mcp add memory node %USERPROFILE%\.claude\mcp-memory\dist\index.js
+
+# Verify installation
+claude mcp list
+
+# Check server details
+claude mcp get memory
+```
+
+After adding, you can use memory tools in Claude Code:
+- Type `/mcp` to see available servers and tools
+- Use memory commands naturally in conversation
+
+#### Option B: Configure Claude Desktop
 
 Find your Claude Desktop configuration file:
 
@@ -189,14 +215,21 @@ Create `~/.claude/mcp-memory/config.json`:
 }
 ```
 
-### Step 5: Restart Claude Desktop
+### Step 5: Restart Your Claude Application
 
-After configuration, restart Claude Desktop for the changes to take effect.
+- **Claude Desktop**: Restart Claude Desktop for the changes to take effect
+- **Claude Code CLI**: The changes take effect immediately
 
 ## Verification
 
 ### Check Installation
 
+#### For Claude Code CLI
+1. Open Claude Code
+2. Type `/mcp` to see if the memory server is listed
+3. Ask Claude: "Can you check the memory server health?"
+
+#### For Claude Desktop
 1. Open Claude Desktop
 2. In a conversation, ask Claude: "Can you check the memory server health?"
 3. Claude should be able to use the `health` tool and report the server status

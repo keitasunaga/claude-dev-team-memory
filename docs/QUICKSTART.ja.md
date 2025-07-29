@@ -1,12 +1,12 @@
 # MCPメモリサーバー クイックスタートガイド
 
-MCPメモリサーバーへようこそ！このガイドでは、Claude Desktop用の永続的なメモリ管理を始めるお手伝いをします。
+MCPメモリサーバーへようこそ！このガイドでは、Claude CodeとClaude Desktop用の永続的なメモリ管理を始めるお手伝いをします。
 
 ## 前提条件
 
 - Node.js 20以上
 - npmまたはpnpm
-- Claude Desktopがインストール済み
+- Claude DesktopまたはClaude Code CLI
 
 ## インストール
 
@@ -47,12 +47,35 @@ Copy-Item -Recurse dist "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item package.json "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item -Recurse node_modules "$env:USERPROFILE\.claude\mcp-memory\"
 
-# Claude Desktopを設定（下記の手動設定を参照）
 ```
 
-### 手動設定
+## 設定
 
-自動インストールが動作しない場合は、Claude Desktopを手動で設定できます：
+### 方法1: Claude Code CLI（推奨）
+
+MCPメモリサーバーを使用する最も簡単な方法はClaude Code CLIを使用することです：
+
+```bash
+# MCPサーバーを追加
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# Windowsの場合、フルパスを使用：
+claude mcp add memory node %USERPROFILE%\.claude\mcp-memory\dist\index.js
+
+# 追加されたことを確認
+claude mcp list
+
+# サーバーの詳細を確認
+claude mcp get memory
+```
+
+追加後、Claude Codeでメモリツールを使用できます：
+1. `/mcp`と入力して利用可能なサーバーとツールを表示
+2. 会話で自然にメモリコマンドを使用
+
+### 方法2: Claude Desktop設定
+
+Claude Desktopを使用する場合は、手動で設定します：
 
 1. Claude Desktopの設定ファイルを見つけます：
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`

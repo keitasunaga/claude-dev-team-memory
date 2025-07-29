@@ -40,7 +40,7 @@ chmod +x scripts/install.sh
 1. 依存関係のインストール
 2. プロジェクトのビルド
 3. ディレクトリ構造の設定
-4. Claude Desktopの自動設定
+4. Claude Desktopの自動設定（インストールされている場合）
 5. 初期設定の作成
 
 ### 手動インストール
@@ -61,7 +61,26 @@ cp package.json ~/.claude/mcp-memory/
 cp -r node_modules ~/.claude/mcp-memory/
 ```
 
-### Claude Desktop設定
+### 設定方法
+
+#### 方法1: Claude Code CLI（推奨）
+
+```bash
+# MCPサーバーをClaude Codeに追加
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# インストールを確認
+claude mcp list
+
+# サーバーの詳細を表示
+claude mcp get memory
+```
+
+Claude Codeでの使用方法：
+- `/mcp`と入力すると利用可能なサーバーとツールが表示されます
+- メモリサーバーのツールが自動的に利用可能になります
+
+#### 方法2: Claude Desktop設定
 
 Claude Desktopの設定ファイルに追加：
 
@@ -104,6 +123,20 @@ Claude Desktopの設定ファイルに追加：
 
 ### Claudeでの使用例
 
+#### Claude Code CLIを使用する場合
+```bash
+# まず利用可能なツールを確認
+/mcp
+
+# メモリツールを使用
+「pnpmをnpmより優先して使うことを覚えて」
+「現在のIssueコンテキストを保存して」
+「リファクタリング前にチェックポイントを作成」
+「このプロジェクトで何を作業していた？」
+「最後のチェックポイントから復元」
+```
+
+#### 直接使用
 ```
 「pnpmをnpmより優先して使うことを覚えて」
 「現在のIssueコンテキストを保存して」

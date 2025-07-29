@@ -8,7 +8,7 @@
 
 - Node.js 20以上
 - npmまたはpnpmパッケージマネージャー
-- Claude Desktopがインストール済み
+- Claude DesktopまたはClaude Code CLI
 - Git（リポジトリのクローン用）
 
 ### 前提条件の確認
@@ -26,6 +26,9 @@ ls "/Applications/Claude.app" 2>/dev/null && echo "Claude Desktopが見つかり
 
 # Windows
 if exist "%LOCALAPPDATA%\Programs\Claude\Claude.exe" (echo Claude Desktopが見つかりました) else (echo Claude Desktopが見つかりません)
+
+# Claude Code CLIがインストールされているか確認
+claude --version
 ```
 
 ## 自動インストール
@@ -52,8 +55,9 @@ chmod +x scripts/install.sh
 3. プロジェクトをビルド
 4. ディレクトリ構造を作成
 5. インストールディレクトリにファイルをコピー
-6. Claude Desktopを自動的に設定
+6. Claude Desktopを自動的に設定（インストールされている場合）
 7. デフォルトの設定ファイルを作成
+8. Claude Code CLIのセットアップ手順を提供
 
 ### スクリプトが作成する構造
 
@@ -112,7 +116,29 @@ Copy-Item package.json "$env:USERPROFILE\.claude\mcp-memory\"
 Copy-Item -Recurse node_modules "$env:USERPROFILE\.claude\mcp-memory\"
 ```
 
-### ステップ3: Claude Desktopを設定
+### ステップ3: Claude環境を設定
+
+#### 方法A: Claude Code CLIを使用（推奨）
+
+```bash
+# MCPサーバーをClaude Codeに追加
+claude mcp add memory node ~/.claude/mcp-memory/dist/index.js
+
+# Windowsの場合：
+claude mcp add memory node %USERPROFILE%\.claude\mcp-memory\dist\index.js
+
+# インストールを確認
+claude mcp list
+
+# サーバーの詳細を確認
+claude mcp get memory
+```
+
+追加後、Claude Codeでメモリツールを使用できます：
+- `/mcp`と入力して利用可能なサーバーとツールを表示
+- 会話で自然にメモリコマンドを使用
+
+#### 方法B: Claude Desktopを設定
 
 Claude Desktopの設定ファイルを見つけます：
 
@@ -189,16 +215,23 @@ MCPメモリサーバーの設定を追加：
 }
 ```
 
-### ステップ5: Claude Desktopを再起動
+### ステップ5: Claudeアプリケーションを再起動
 
-設定後、変更を有効にするためにClaude Desktopを再起動します。
+- **Claude Desktop**: 変更を有効にするためにClaude Desktopを再起動
+- **Claude Code CLI**: 変更は即座に有効になります
 
 ## 検証
 
 ### インストールの確認
 
+#### Claude Code CLIの場合
+1. Claude Codeを開く
+2. `/mcp`と入力してメモリサーバーがリストされているか確認
+3. Claudeに尋ねる：「メモリサーバーの健全性を確認できますか？」
+
+#### Claude Desktopの場合
 1. Claude Desktopを開く
-2. 会話でClaudeに尋ねる: 「メモリサーバーの健全性を確認できますか？」
+2. 会話でClaudeに尋ねる：「メモリサーバーの健全性を確認できますか？」
 3. Claudeが`health`ツールを使用してサーバーステータスを報告できるはずです
 
 ### 基本機能のテスト
